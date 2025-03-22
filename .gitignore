@@ -1,0 +1,80 @@
+# ==========================
+# 🔹 General Ignore Rules
+# ==========================
+
+# Ignore system-specific files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ==========================
+# 🔹 Python / Django
+# ==========================
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Bytecode
+__pycache__/
+*.py[cod]
+
+# Logs & Debug
+*.log
+*.out
+
+# Local Database
+db.sqlite3
+db.sqlite3-journal
+
+# Django Migrations (Compiled)
+**/migrations/*.pyc
+
+# Security
+.env
+*.pem
+config/settings_local.py  # If you have local settings
+
+# ==========================
+# 🔹 Node.js / React (Vite)
+# ==========================
+
+# Node modules & dependencies
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Vite Build Output
+dist/
+
+# Cache files
+.cache/
+.vscode/
+.idea/
+*.lock
+*.tmp
+
+# ==========================
+# 🔹 VS Code & JetBrains
+# ==========================
+
+.vscode/
+*.iml
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ==========================
+# 🔹 Git Ignore Overrides
+# ==========================
+
+# Allow tracking of environment example files
+!env.example
+!.env.sample
+
+# Allow tracking of migrations folder (but not its compiled files)
+!**/migrations/
