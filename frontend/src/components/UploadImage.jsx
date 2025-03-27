@@ -1,47 +1,64 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "/home/sarvesh/Handwritten-Text---Digital-Text-Converter/frontend/src/styles/styles.css";
+import "/home/sarvesh/Handwritten-Text---Digital-Text-Converter/frontend/src/styles/UploadImage.css";
 
 const UploadImage = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
-  const [extractedText, setExtractedText] = useState("");
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [convertedText, setConvertedText] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        setSelectedImage(file);
+    };
 
-  const handleUpload = async () => {
-    if (!selectedFile) {
-      toast.error("Please select an image file");
-      return;
-    }
+    const handleUpload = async () => {
+        if (!selectedImage) {
+            alert("Please select an image first.");
+            return;
+        }
 
-    const formData = new FormData();
-    formData.append("image", selectedFile);
+        const formData = new FormData();
+        formData.append("image", selectedImage);
 
-    try {
-      const response = await axios.post("http://127.0.0.1:8000/api/upload/", formData);
-      setImageUrl(response.data.image_url);
-      setExtractedText(response.data.extracted_text);
-      toast.success("Image uploaded and text extracted!");
-    } catch (error) {
-      toast.error("Upload failed! Try again.");
-    }
-  };
+        setIsLoading(true);
 
-  return (
-    <div className="container">
-      <h2>Upload an Image for OCR</h2>
-      <input type="file" accept="image/*" onChange={handleFileChange} />
-      <button className="upload-btn" onClick={handleUpload}>Upload</button>
+        try {
+            const response = await axios.post("http://127.0.0.1:8000/api/upload/", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+            setConvertedText(response.data.text);
+        } catch (error) {
+            console.error("Error uploading image:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-      {imageUrl && <img src={imageUrl} alt="Uploaded" className="image-preview" />}
-      {extractedText && <div className="text-box">{extractedText}</div>}
-    </div>
-  );
+    return (
+        <div className="container">
+            <h2>Upload an Image for OCR</h2>
+            <input type="file" accept="image/*" onChange={handleFileChange} />
+            <button className="upload-btn" onClick={handleUpload}>Upload</button>
+
+            <div className="content">
+                {/* Left Side: Image Preview */}
+                <div className="image-preview">
+                    {selectedImage && <img src={URL.createObjectURL(selectedImage)} alt="Uploaded" />}
+                </div>
+
+                {/* Middle: Loading Animation */}
+                <div className="animation">
+                    {isLoading && <div className="spinner"></div>}
+                </div>
+
+                {/* Right Side: Converted Text */}
+                <div className="text-output">
+                    <textarea value={convertedText} readOnly placeholder="Converted text will appear here..." />
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default UploadImage;
