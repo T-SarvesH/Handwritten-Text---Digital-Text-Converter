@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import test_api
+from .views import upload_and_process_image
 
 urlpatterns = [
-    path('test', test_api),
+    path("upload/", upload_and_process_image, name="upload-image"),
 ]

@@ -78,3 +78,5 @@ dist/
 
 # Allow tracking of migrations folder (but not its compiled files)
 !**/migrations/
+
+echo ".env" >> .gitignore

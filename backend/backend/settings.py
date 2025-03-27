@@ -11,6 +11,24 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env file
+
+AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT = os.getenv("AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT")
+AZURE_DOCUMENT_INTELLIGENCE_KEY = os.getenv("AZURE_DOCUMENT_INTELLIGENCE_KEY")
+AZURE_API_VERSION = os.getenv("AZURE_API_VERSION", "2024-11-30")
+AZURE_MODEL = os.getenv("AZURE_MODEL", "prebuilt-read")
+
+AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")
+AZURE_ACCOUNT_KEY = os.getenv("AZURE_ACCOUNT_KEY")
+AZURE_CONTAINER_NAME = os.getenv("AZURE_CONTAINER_NAME")
+
+AZURE_CONNECTION_STRING = (
+    f"DefaultEndpointsProtocol=https;AccountName={AZURE_ACCOUNT_NAME};"
+    f"AccountKey={AZURE_ACCOUNT_KEY};EndpointSuffix=core.windows.net"
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
