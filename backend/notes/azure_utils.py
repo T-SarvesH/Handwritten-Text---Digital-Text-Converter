@@ -1,7 +1,8 @@
 from azure.storage.blob import BlobServiceClient
 import os
+from django.conf import settings
 
-AZURE_CONNECTION_STRING = os.getenv("AZURE_CONNECTION_STRING")
+AZURE_CONNECTION_STRING = settings.AZURE_CONNECTION_STRING
 AZURE_CONTAINER_NAME = os.getenv("AZURE_CONTAINER_NAME")
 
 def upload_image_to_blob(image_file, file_name):
