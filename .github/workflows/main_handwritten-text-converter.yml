@@ -72,6 +72,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F087060A24C6485BB33C94F3390C79BE }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_83DAC1CEEE064834A497189DC0B7B87D }}
 
+          
+      - name: Wait before deployment
+        run: sleep 30
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
