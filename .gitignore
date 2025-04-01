@@ -80,3 +80,4 @@ dist/
 !**/migrations/
 
 echo ".env" >> .gitignore
+.env
