@@ -25,14 +25,13 @@ AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")
 AZURE_ACCOUNT_KEY = os.getenv("AZURE_ACCOUNT_KEY")
 AZURE_CONTAINER_NAME = os.getenv("AZURE_CONTAINER_NAME")
 
-AZURE_CONNECTION_STRING = AZURE_CONNECTION_STRING = (
+AZURE_CONNECTION_STRING = (
     f"DefaultEndpointsProtocol=https;AccountName={AZURE_ACCOUNT_NAME};"
     f"AccountKey={AZURE_ACCOUNT_KEY};EndpointSuffix=core.windows.net"
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -41,10 +40,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-r6r3ehv0p--iirddz@-xewyq05w+(3ooga%&tvjea4lxkak#v!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False  # Change this to False in production
 
-ALLOWED_HOSTS = []
-
+# Add your Azure app domain here
+ALLOWED_HOSTS = ['handwritten-text-converter-edhxayerdpgdfub6.eastasia-01.azurewebsites.net']
 
 # Application definition
 
@@ -74,8 +73,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'backend.urls'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  
-    "http://localhost:5173",
+    "http://localhost:3000",  # Add frontend URL during development
+    "http://localhost:5173",  # Add any other development frontend URL
 ]
 
 REST_FRAMEWORK = {
@@ -83,7 +82,6 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ),
 }
-
 
 TEMPLATES = [
     {
@@ -103,7 +101,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -113,7 +110,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -133,7 +129,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -144,7 +139,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
