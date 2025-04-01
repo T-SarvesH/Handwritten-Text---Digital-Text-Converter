@@ -68,13 +68,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_1E3E87DACE494E19A9F040238F6D9449 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F087060A24C6485BB33C94F3390C79BE }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_83DAC1CEEE064834A497189DC0B7B87D }}
-
-          
-      - name: Wait before deployment
-        run: sleep 30
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_574A256551C74BA9BFFC7B79BA90246F }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D4EA81518ECD46F0AD9E8FA9D7AC3B35 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_03F019903B9B414787DE2A2FBA9430D0 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
