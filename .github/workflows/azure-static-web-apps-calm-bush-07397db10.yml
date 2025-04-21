@@ -20,13 +20,6 @@ jobs:
           submodules: true
           lfs: false
 
-      # Check this output after ensuring disconnect/reconnect was done
-      - name: Print Runner Environment Variables Before SWA Action
-        run: |
-          echo "--- Runner Environment Variables Before SWA Action ---"
-          printenv | grep VITE_API_URL || echo "VITE_API_URL not found in environment"
-          echo "----------------------------------------------------"
-
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -34,14 +27,12 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_CALM_BUSH_07397DB10 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
-          ###### Repository/Build Configurations ######
-          app_location: "./frontend"
-          api_location: ""
-          output_location: "dist"
-
-          # Simplify app_build_command again
-          app_build_command: cd $APP_LOCATION && npm install && npm run build
-
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "./frontend" # App source code path
+          api_location: "" # Api source code path - optional
+          output_location: "dist" # Built app content directory - optional
+          # app_build_command is removed here, letting SWA action auto-detect and build
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
