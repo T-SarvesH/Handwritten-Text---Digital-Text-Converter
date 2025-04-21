@@ -34,12 +34,14 @@ jobs:
           output_location: "dist" # Built app content directory - optional
 
           # Explicitly define the app build command and include debug output
+          # Corrected cd command and simplified env var check
           app_build_command: |
             echo "--- Frontend Build Environment Variables ---"
-            printenv | grep VITE_API_URL || echo "VITE_API_URL not found in environment"
+            # Explicitly echo the variable Vite uses
+            echo "VITE_API_URL is: $VITE_API_URL"
             echo "--------------------------------------------"
-            # Navigate to the app directory and run the build command
-            cd ${{ github.workspace }}/${{ inputs.app_location }}
+            # Navigate to the app directory using the environment variable provided by the action
+            cd $APP_LOCATION
             npm install --legacy-peer-deps || yarn install --ignore-engines # Install dependencies
             npm run build || yarn build # Run the Vite build command
 
