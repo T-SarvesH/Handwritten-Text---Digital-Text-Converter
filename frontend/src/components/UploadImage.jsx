@@ -48,8 +48,12 @@ const UploadImage = () => {
         setDisplayedText("");
         setIsCopied(false);
 
+        // Access the API URL from environment variables
+        const apiUrl = import.meta.env.REACT_APP_API_URL; // Using Vite's way to access env variables
+
         try {
-            const response = await axios.post("http://127.0.0.1:8000/api/upload/", formData, {
+            // Use the environment variable for the base URL
+            const response = await axios.post(`${apiUrl}api/upload/`, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             setConvertedText(response.data.extracted_text);
@@ -66,7 +70,7 @@ const UploadImage = () => {
             textareaRef.current.select();
             document.execCommand('copy');
             setIsCopied(true);
-            
+
             // Reset copied state after 2 seconds
             setTimeout(() => setIsCopied(false), 2000);
         }
@@ -75,14 +79,14 @@ const UploadImage = () => {
     return (
         <div className="ocr-container">
             <div className="upload-section">
-                <input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={handleFileChange} 
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
                     className="file-input"
                 />
-                <button 
-                    className="upload-btn" 
+                <button
+                    className="upload-btn"
                     onClick={handleUpload}
                     disabled={isLoading}
                 >
@@ -94,9 +98,9 @@ const UploadImage = () => {
                 {/* Image Preview Section */}
                 <div className="image-preview">
                     {selectedImage ? (
-                        <img 
-                            src={URL.createObjectURL(selectedImage)} 
-                            alt="Uploaded" 
+                        <img
+                            src={URL.createObjectURL(selectedImage)}
+                            alt="Uploaded"
                             className="preview-image"
                         />
                     ) : (
@@ -114,16 +118,16 @@ const UploadImage = () => {
                         </div>
                     ) : (
                         <div className="textarea-container">
-                            <textarea 
+                            <textarea
                                 ref={textareaRef}
-                                value={displayedText} 
-                                readOnly 
+                                value={displayedText}
+                                readOnly
                                 placeholder="Converted text will appear here..."
                                 className="output-textarea"
                             />
                             {displayedText && (
-                                <button 
-                                    className="copy-btn" 
+                                <button
+                                    className="copy-btn"
                                     onClick={handleCopyToClipboard}
                                 >
                                     {isCopied ? "Copied!" : "Copy to Clipboard"}
