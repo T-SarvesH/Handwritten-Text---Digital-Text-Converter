@@ -14,12 +14,38 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-load_dotenv()  # Load environment variables from .env file
-BASE_DIR = Path(__file__).resolve().parent.parent
-STATIC_URL = '/static/'
-# Add this line for collecting static files in production
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Load environment variables from .env file
+# Note: python-dotenv is useful for local development,
+# but environment variables set in Azure App Service
+# Configuration will override .env file values in production.
+load_dotenv()
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Remove the duplicate definition of BASE_DIR if it exists later in the file
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+# Read SECRET_KEY from environment variable for production security
+SECRET_KEY = os.environ.get('SECRET_KEY', 'a-default-secret-key-for-development-or-tests')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+# Set DEBUG to False for production
+DEBUG = False
+
+# ALLOWED_HOSTS are required when DEBUG is False
+# Add your Azure Web App hostname(s) here
+ALLOWED_HOSTS = ['hdocr.azurewebsites.net']
+# If you need to allow requests from localhost during testing/development, you can add it conditionally
+# if DEBUG:
+#     ALLOWED_HOSTS = ['*'] # Allow all hosts in debug mode for simplicity
+# else:
+#     ALLOWED_HOSTS = ['hdocr.azurewebsites.net'] # Production hosts
+
+
+# Environment variables for Azure services
 AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT = os.getenv("AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT")
 AZURE_DOCUMENT_INTELLIGENCE_KEY = os.getenv("AZURE_DOCUMENT_INTELLIGENCE_KEY")
 AZURE_API_VERSION = os.getenv("AZURE_API_VERSION")
@@ -29,25 +55,11 @@ AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")
 AZURE_ACCOUNT_KEY = os.getenv("AZURE_ACCOUNT_KEY")
 AZURE_CONTAINER_NAME = os.getenv("AZURE_CONTAINER_NAME")
 
-AZURE_CONNECTION_STRING = AZURE_CONNECTION_STRING = (
+# Construct connection string - ensure these variables are set in Azure App Service
+AZURE_CONNECTION_STRING = (
     f"DefaultEndpointsProtocol=https;AccountName={AZURE_ACCOUNT_NAME};"
     f"AccountKey={AZURE_ACCOUNT_KEY};EndpointSuffix=core.windows.net"
 )
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-r6r3ehv0p--iirddz@-xewyq05w+(3ooga%&tvjea4lxkak#v!'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -59,9 +71,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',  
-    'corsheaders',     
-    'notes',           
+    'rest_framework',
+    'corsheaders',
+    'notes',
 ]
 
 MIDDLEWARE = [
@@ -72,17 +84,20 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # Ensure CorsMiddleware is placed high up, preferably before CommonMiddleware
 ]
 
 ROOT_URLCONF = 'backend.urls'
 
+# CORS Configuration
+# WARNING: CORS_ALLOW_ALL_ORIGINS = True is permissive.
+# In production, you should restrict this to your frontend's domain(s).
+# Example (if you were restricting):
 # CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",  
-#     "http://localhost:5173",
+#     "https://your-frontend-name.azurestaticapps.net",
 # ]
-
 CORS_ALLOW_ALL_ORIGINS = True
+
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
@@ -113,10 +128,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# Using SQLite in production is generally NOT recommended for anything other than basic testing.
+# You should typically use a managed database service like Azure Database for PostgreSQL or MySQL.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3', # SQLite will be stored in the persistent /home directory on Azure
     }
 }
 
@@ -155,7 +172,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/' # Keep this as a relative URL
+
+# Add this line for collecting static files in production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
