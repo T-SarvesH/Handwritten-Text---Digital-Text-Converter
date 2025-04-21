@@ -20,7 +20,7 @@ jobs:
           submodules: true
           lfs: false
 
-      # Add this step to print environment variables in the runner BEFORE the SWA deploy action
+      # Check this output after ensuring disconnect/reconnect was done
       - name: Print Runner Environment Variables Before SWA Action
         run: |
           echo "--- Runner Environment Variables Before SWA Action ---"
@@ -34,25 +34,16 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_CALM_BUSH_07397DB10 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "./frontend" # App source code path
-          api_location: "" # Api source code path - optional
-          output_location: "dist" # Built app content directory - optional
+          ###### Repository/Build Configurations ######
+          app_location: "./frontend"
+          api_location: ""
+          output_location: "dist"
 
-          # Explicitly define the app build command and include debug output
-          # Corrected cd command and simplified env var check
-          app_build_command: |
-            echo "--- Frontend Build Environment Variables (inside build command) ---"
-            echo "VITE_API_URL is: $VITE_API_URL"
-            echo "-----------------------------------------------------------------"
-            cd $APP_LOCATION
-            npm install --legacy-peer-deps || yarn install --ignore-engines # Install dependencies
-            npm run build || yarn build # Run the Vite build command
+          # Simplify app_build_command again
+          app_build_command: cd $APP_LOCATION && npm install && npm run build
 
           ###### End of Repository/Build Configurations ######
 
-# Corrected Indentation: close_pull_request_job should be at the same level as build_and_deploy_job
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
