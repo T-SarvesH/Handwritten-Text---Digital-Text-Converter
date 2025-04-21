@@ -15,6 +15,10 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()  # Load environment variables from .env file
+BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_URL = '/static/'
+# Add this line for collecting static files in production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT = os.getenv("AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT")
 AZURE_DOCUMENT_INTELLIGENCE_KEY = os.getenv("AZURE_DOCUMENT_INTELLIGENCE_KEY")
