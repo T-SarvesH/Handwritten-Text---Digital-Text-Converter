@@ -49,7 +49,7 @@ const UploadImage = () => {
         setIsCopied(false);
 
         // Access the API URL from environment variables
-        const apiUrl = import.meta.env.VITE_API_URL; // Correct way to access VITE env variables // Using Vite's way to access env variables
+        const apiUrl = "http://127.0.0.1:8000/"; // Correct way to access VITE env variables // Using Vite's way to access env variables
 
         try {
             // Use the environment variable for the base URL
